@@ -13,7 +13,7 @@ spring:
       server-addr: localhost:8848
       discovery:
         cluster-name: HZ
-        namespace: ebf15dd7-5db4-4b97-9bd2-d8a0459f9721  # 一定注意，填ID
+#        namespace: ebf15dd7-5db4-4b97-9bd2-d8a0459f9721  # 一定注意，填ID
 mybatis:
   type-aliases-package: cn.itcast.user.pojo
   configuration:
@@ -38,3 +38,14 @@ ribbon:
 user-service:  # 要做配置的微服务名称
   ribbon:
     NFLoadBalancerRuleClassName: com.alibaba.cloud.nacos.ribbon.NacosRule
+
+feign:
+  httpclient:
+    enabled: true
+    # 连接池配置
+    max-connections: 200
+    max-connections-per-route: 50
+  client:
+    config:
+      default:
+        loggerLevel: BASIC

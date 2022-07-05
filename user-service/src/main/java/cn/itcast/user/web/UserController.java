@@ -6,6 +6,7 @@ import com.alibaba.nacos.api.config.annotation.NacosValue;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +14,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+import cn.itcast.user.config.PatternProperty;
+
 @Slf4j
 @RestController
+//@RefreshScope
 @RequestMapping("/user")
 public class UserController {
 
@@ -22,12 +26,20 @@ public class UserController {
     private UserService userService;
 
     // 取配置文件中的变量值
-    @NacosValue("${pattern.dateformat}")
-    private String dateformat;
+//     @Value("${pattern.dateformat}")
+//     private String dateformat;
 
-    @GetMapping("/now")
+    @Autowired
+    private PatternProperty patternProperty;
+
+    @GetMapping("now")
     public String now(){
-        return dateformat;
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern(patternProperty.getDateformat(),Locale.CHINA));
+    }
+
+    @GetMapping("prop")
+    public PatternProperty prop(){
+        return patternProperty;
     }
 
     /**
